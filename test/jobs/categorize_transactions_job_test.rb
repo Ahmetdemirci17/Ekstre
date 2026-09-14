@@ -15,6 +15,8 @@ class CategorizeTransactionsJobTest < ActiveJob::TestCase
     assert_not_nil @tx.category_id
     assert_equal "ai", @tx.categorized_by
     assert_equal "Fatura", @tx.category.name
+    assert_not_nil @tx.merchant_name
+    assert_not_nil @tx.ai_analysis
     assert_equal "categorized", @statement.reload.status
   end
 end

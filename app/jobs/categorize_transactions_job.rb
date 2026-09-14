@@ -20,9 +20,15 @@ class CategorizeTransactionsJob < ApplicationJob
         transaction = batch.find { |t| t.id == tx_id }
         next unless transaction
 
-        matched_category = Category.where("LOWER(name) = ?", category_name.to_s.strip.downcase).first || default_category
+        detail = result[:details]&.dig(tx_id) || {}
+        cat_clean = category_name.to_s.strip
+        matched_category = Category.where("LOWER(name) = ?", cat_clean.downcase).first || default_category
+
         transaction.update(
           category: matched_category,
+          merchant_name: detail[:merchant].presence || transaction.merchant_name,
+          ai_analysis: detail[:analysis].presence || transaction.ai_analysis,
+          confidence_score: detail[:confidence] || transaction.confidence_score,
           categorized_by: :ai
         )
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_14_213929) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_223019) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,12 +32,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_213929) do
   end
 
   create_table "transactions", force: :cascade do |t|
+    t.text "ai_analysis"
     t.decimal "amount", precision: 12, scale: 2, null: false
     t.integer "categorized_by", default: 0, null: false
     t.bigint "category_id"
+    t.decimal "confidence_score", precision: 3, scale: 2
     t.datetime "created_at", null: false
     t.date "date", null: false
     t.text "description", null: false
+    t.string "merchant_name"
     t.text "raw_row"
     t.bigint "statement_id", null: false
     t.datetime "updated_at", null: false

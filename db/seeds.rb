@@ -3,9 +3,12 @@ default_categories = [
   { name: "Market", color: "#2D936C" },       # Matte Sage
   { name: "Fatura", color: "#B91C1C" },       # Matte Crimson
   { name: "Ulaşım", color: "#D97706" },       # Matte Amber
-  { name: "Eğlence", color: "#7C3AED" },      # Matte Violet
+  { name: "Yeme & İçme", color: "#EA580C" },  # Matte Warm Orange
+  { name: "Alışveriş", color: "#9333EA" },    # Matte Violet
+  { name: "Eğlence", color: "#4F46E5" },      # Matte Indigo
   { name: "Sağlık", color: "#BE185D" },       # Matte Rose
   { name: "Kira & Konut", color: "#2563EB" }, # Matte Blue
+  { name: "Eğitim", color: "#0284C7" },       # Matte Sky Blue
   { name: "Maaş / Gelir", color: "#059669" }, # Matte Forest
   { name: "Diğer", color: "#64748B" }         # Matte Slate Gray
 ]
@@ -173,13 +176,19 @@ monthly_statements.each do |stmt_data|
 
   stmt_data[:items].each do |item|
     date = Date.parse("#{stmt_data[:date_prefix]}-#{sprintf('%02d', item[:day])}")
-    category = categories[item[:cat]]
+    category = categories[item[:cat]] || categories["Diğer"]
+
+    temp_tx = Transaction.new(id: 1, description: item[:desc], amount: item[:amount])
+    analysis_data = GeminiCategorizer.new([temp_tx]).send(:fallback_categorize, [temp_tx])[:details][1] || {}
 
     statement.transactions.create!(
       date: date,
       description: item[:desc],
       amount: item[:amount],
       category: category,
+      merchant_name: analysis_data[:merchant],
+      ai_analysis: analysis_data[:analysis],
+      confidence_score: 0.95,
       categorized_by: :ai,
       raw_row: "#{date.strftime('%d.%m.%Y')};#{item[:desc]};#{item[:amount]}"
     )

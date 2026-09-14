@@ -27,5 +27,21 @@ class GeminiCategorizerTest < ActiveSupport::TestCase
     assert_equal "Market", result[:results][101]
     assert_equal "Eğlence", result[:results][102]
     assert_equal "Maaş / Gelir", result[:results][103]
+
+    assert_equal "BİM", result[:details][101][:merchant]
+    assert_includes result[:details][101][:analysis], "market"
+    assert_equal "Netflix", result[:details][102][:merchant]
+    assert_includes result[:details][102][:analysis], "abonelik"
+  end
+
+  test "extracts clean merchant and analysis for complex transactions" do
+    tx = Transaction.new(id: 201, description: "POS 48291 IYZICO / TRENDYOL ISTANBUL", amount: -450.00)
+    categorizer = GeminiCategorizer.new([tx])
+    result = categorizer.call
+
+    assert result[:success]
+    assert_equal "Trendyol", result[:details][201][:merchant]
+    assert_not_nil result[:details][201][:analysis]
+    assert result[:details][201][:confidence] > 0
   end
 end

@@ -272,11 +272,22 @@
                   <%= transaction.date.strftime("%d.%m.%Y") %>
                 </td>
                 <td class="py-3 px-4 max-w-sm sm:max-w-md">
-                  <div class="font-medium text-white text-xs sm:text-sm truncate" title="<%= transaction.description %>">
-                    <%= transaction.description %>
+                  <div class="flex items-center gap-2">
+                    <% if transaction.merchant_name.present? %>
+                      <span class="font-semibold text-white text-xs sm:text-sm"><%= transaction.merchant_name %></span>
+                    <% else %>
+                      <span class="font-medium text-white text-xs sm:text-sm truncate" title="<%= transaction.description %>">
+                        <%= transaction.description %>
+                      </span>
+                    <% end %>
                   </div>
-                  <div class="text-[11px] text-zinc-500">
-                    <%= transaction.statement.bank_name.presence || transaction.statement.source_filename %>
+                  <% if transaction.ai_analysis.present? %>
+                    <div class="text-[11px] text-zinc-300 truncate mt-0.5" title="<%= transaction.ai_analysis %>">
+                      <span class="text-[#E05252] text-[10px]">✦</span> <%= transaction.ai_analysis %>
+                    </div>
+                  <% end %>
+                  <div class="text-[10px] text-zinc-500 font-tabular mt-0.5">
+                    <%= transaction.statement.bank_name.presence || transaction.statement.source_filename %> • <%= transaction.description.truncate(35) %>
                   </div>
                 </td>
                 <td class="py-3 px-4 whitespace-nowrap text-right font-semibold text-xs sm:text-sm font-tabular">
