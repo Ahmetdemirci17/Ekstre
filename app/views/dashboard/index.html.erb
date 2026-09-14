@@ -188,12 +188,36 @@
       </div>
 
       <!-- Current Month Category Breakdown Doughnut Chart (1 Col) -->
-      <div class="bg-[#18191E] border border-[#262830] rounded-xl p-5 sm:p-6 flex flex-col justify-between">
+      <div class="bg-[#18191E] border border-[#262830] rounded-xl p-5 sm:p-6 flex flex-col justify-between"
+           data-controller="chart"
+           data-chart-type-value="doughnut"
+           data-chart-data-value="<%= @category_chart_data.to_json %>"
+           data-chart-options-value='{
+             "responsive": true,
+             "maintainAspectRatio": false,
+             "cutout": "72%",
+             "layout": { "padding": 12 },
+             "plugins": {
+               "legend": { "position": "bottom", "labels": { "color": "#9CA3AF", "font": { "family": "Inter", "size": 11 }, "boxWidth": 10 } },
+               "tooltip": {
+                 "backgroundColor": "#141519",
+                 "titleColor": "#FFFFFF",
+                 "bodyColor": "#ECEEF2",
+                 "borderColor": "#2E303A",
+                 "borderWidth": 1,
+                 "padding": 10,
+                 "boxPadding": 4
+               }
+             }
+           }'>
         <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#262830]">
           <div>
             <h2 class="text-sm sm:text-base font-semibold text-white tracking-tight">Kategori Dağılımı</h2>
             <p class="text-xs text-zinc-400">Bu ayki harcamaların dökümü</p>
           </div>
+          <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-[#141519] border border-[#262830] text-zinc-400 hidden sm:inline-block">
+            Detay için üzerine gelin
+          </span>
         </div>
         <% if @category_chart_data[:labels].empty? %>
           <div class="h-64 flex flex-col items-center justify-center text-zinc-500 text-xs">
@@ -201,19 +225,21 @@
             <p>Bu ay için harcama kaydı bulunmuyor</p>
           </div>
         <% else %>
-          <div class="w-full h-64 relative">
-            <canvas data-controller="chart"
-                    data-chart-type-value="doughnut"
-                    data-chart-data-value="<%= @category_chart_data.to_json %>"
-                    data-chart-options-value='{
-                      "responsive": true,
-                      "maintainAspectRatio": false,
-                      "cutout": "72%",
-                      "plugins": {
-                        "legend": { "position": "bottom", "labels": { "color": "#9CA3AF", "font": { "family": "Inter", "size": 11 }, "boxWidth": 10 } }
-                      }
-                    }'>
-            </canvas>
+          <div class="w-full h-64 relative flex items-center justify-center">
+            <canvas data-chart-target="canvas"></canvas>
+
+            <!-- Center Dynamic Readout with Expanding Pop Animation -->
+            <div data-chart-target="centerDisplay"
+                 class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center transition-all duration-300 ease-out transform scale-100 p-2">
+              <span data-chart-target="centerLabel" class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider transition-colors duration-200 truncate max-w-[140px]">
+                Toplam Harcama
+              </span>
+              <span data-chart-target="centerValue" class="text-base sm:text-lg font-bold font-tabular text-white tracking-tight mt-0.5 transition-all duration-200">
+                <%= sprintf("%.2f ₺", @this_month_spent) %>
+              </span>
+              <span data-chart-target="centerBadge" class="hidden text-[10px] font-semibold px-2 py-0.5 rounded-full mt-1 border transition-all duration-200 font-tabular">
+              </span>
+            </div>
           </div>
         <% end %>
       </div>

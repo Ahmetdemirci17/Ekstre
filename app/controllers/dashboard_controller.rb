@@ -111,7 +111,10 @@ class DashboardController < ApplicationController
           data: cat_values,
           backgroundColor: cat_colors,
           borderColor: "#18191E",
-          borderWidth: 2
+          borderWidth: 2,
+          hoverOffset: 20,
+          hoverBorderColor: "#ECEEF2",
+          hoverBorderWidth: 2
         }
       ]
     }

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["canvas"]
+  static targets = ["canvas", "centerDisplay", "centerLabel", "centerValue", "centerBadge"]
   static values = {
     type: { type: String, default: "line" },
     data: Object,
@@ -32,13 +32,85 @@ export default class extends Controller {
     }
 
     const ctx = canvas.getContext("2d")
+    const options = Object.assign({}, this.optionsValue || {})
+
+    // Doughnut halkanın ortasında büyüyen detay efekti
+    if (this.typeValue === "doughnut" && this.hasCenterDisplayTarget) {
+      this.defaultLabel = this.hasCenterLabelTarget ? this.centerLabelTarget.textContent.trim() : "Toplam Harcama"
+      this.defaultValue = this.hasCenterValueTarget ? this.centerValueTarget.textContent.trim() : ""
+
+      options.onHover = (event, activeElements) => {
+        this.handleDoughnutHover(activeElements)
+      }
+
+      canvas.addEventListener("mouseleave", () => this.resetDoughnutCenter())
+    }
+
     const config = {
       type: this.typeValue,
       data: this.dataValue,
-      options: this.optionsValue || {}
+      options: options
     }
 
     this.chart = new Chart(ctx, config)
+  }
+
+  handleDoughnutHover(activeElements) {
+    if (!this.hasCenterDisplayTarget) return
+
+    if (activeElements && activeElements.length > 0) {
+      const index = activeElements[0].index
+      const dataset = this.chart.data.datasets[0]
+      const label = this.chart.data.labels[index]
+      const value = dataset.data[index]
+      const color = Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[index] : "#E05252"
+      const total = dataset.data.reduce((sum, val) => sum + (Number(val) || 0), 0)
+      const percent = total > 0 ? ((value / total) * 100).toFixed(1) : "0"
+
+      const formatted = new Intl.NumberFormat("tr-TR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(value) + " ₺"
+
+      if (this.hasCenterLabelTarget) {
+        this.centerLabelTarget.textContent = label
+        this.centerLabelTarget.style.color = color
+      }
+      if (this.hasCenterValueTarget) {
+        this.centerValueTarget.textContent = formatted
+      }
+      if (this.hasCenterBadgeTarget) {
+        this.centerBadgeTarget.textContent = `%${percent}`
+        this.centerBadgeTarget.style.backgroundColor = `${color}25`
+        this.centerBadgeTarget.style.borderColor = `${color}60`
+        this.centerBadgeTarget.style.color = color
+        this.centerBadgeTarget.classList.remove("hidden")
+      }
+
+      // Ekranda büyüyen efekt (scale ve vurgu)
+      this.centerDisplayTarget.classList.remove("scale-100")
+      this.centerDisplayTarget.classList.add("scale-110")
+    } else {
+      this.resetDoughnutCenter()
+    }
+  }
+
+  resetDoughnutCenter() {
+    if (!this.hasCenterDisplayTarget) return
+
+    if (this.hasCenterLabelTarget) {
+      this.centerLabelTarget.textContent = this.defaultLabel || "Toplam Harcama"
+      this.centerLabelTarget.style.color = ""
+    }
+    if (this.hasCenterValueTarget) {
+      this.centerValueTarget.textContent = this.defaultValue || ""
+    }
+    if (this.hasCenterBadgeTarget) {
+      this.centerBadgeTarget.classList.add("hidden")
+    }
+
+    this.centerDisplayTarget.classList.remove("scale-110")
+    this.centerDisplayTarget.classList.add("scale-100")
   }
 
   toggleDataset(event) {
