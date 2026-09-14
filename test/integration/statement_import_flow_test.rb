@@ -45,4 +45,38 @@ class StatementImportFlowTest < ActionDispatch::IntegrationTest
     rent = statement.transactions.find_by("description LIKE ?", "%KİRA%")
     assert_equal "Kira & Konut", rent.category.name
   end
+
+  test "full PDF statement upload, parsing, and categorization flow" do
+    uploaded_file = fixture_file_upload("sample_bank_statement.pdf", "application/pdf")
+
+    assert_difference -> { Statement.count }, 1 do
+      assert_enqueued_with(job: CategorizeTransactionsJob) do
+        post statements_url, params: {
+          statement: {
+            bank_name: "Garanti BBVA",
+            file: uploaded_file
+          }
+        }
+      end
+    end
+
+    statement = Statement.order(:created_at).last
+    assert_redirected_to statement_path(statement)
+    follow_redirect!
+    assert_response :success
+
+    assert_equal 12, statement.transactions.count
+
+    perform_enqueued_jobs
+
+    statement.reload
+    assert_equal "categorized", statement.status
+    assert_equal 0, statement.uncategorized_count
+
+    salary = statement.transactions.find_by("description LIKE ?", "%MAAS%")
+    assert_equal "Maaş / Gelir", salary.category.name
+
+    market = statement.transactions.find_by("description LIKE ?", "%MIGROS%")
+    assert_equal "Market", market.category.name
+  end
 end

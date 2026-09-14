@@ -11,7 +11,7 @@
     </div>
     <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Banka Ekstresi Yükle</h1>
     <p class="mt-2 text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
-      Hesap hareketlerinizi içeren CSV dosyasını yükleyin. Yapay zeka tüm harcamaları otomatik olarak analiz etsin.
+      Hesap hareketlerinizi içeren CSV veya PDF e-ekstre dosyasını yükleyin. Yapay zeka tüm harcamaları otomatik olarak analiz etsin.
     </p>
   </div>
 
@@ -21,14 +21,14 @@
         <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Banka Kurumu (İsteğe Bağlı)</label>
         <%= f.select :bank_name, 
               ["Garanti BBVA", "İş Bankası", "Yapı Kredi", "Akbank", "Ziraat Bankası", "QNB Finansbank", "Enpara", "VakıfBank", "Diğer"], 
-              { include_blank: "Banka Seçimi Yapın..." }, 
+              { include_blank: "Banka Seçimi Yapın (veya dosyadan otomatik algılansın)..." }, 
               class: "w-full rounded-lg bg-[#141519] border border-[#262830] text-zinc-200 px-4 py-2.5 text-sm focus:outline-none focus:border-[#B91C1C] transition-colors" %>
       </div>
 
       <div>
-        <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Ekstre Dosyası (.CSV)</label>
+        <label class="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">Ekstre Dosyası (.CSV veya .PDF)</label>
         <div class="relative border-2 border-dashed border-[#2E303A] hover:border-[#B91C1C]/70 rounded-xl p-8 text-center transition-colors bg-[#141519] group cursor-pointer">
-          <input type="file" name="statement[file]" id="statement_file" accept=".csv,text/csv" required
+          <input type="file" name="statement[file]" id="statement_file" accept=".csv,text/csv,.pdf,application/pdf" required
                  class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                  onchange="document.getElementById('file-chosen').textContent = this.files[0] ? this.files[0].name : 'Dosya seçilmedi'">
           <div class="space-y-2.5 pointer-events-none">
@@ -39,18 +39,18 @@
               <span class="text-[#E05252]">Dosya seçmek için tıklayın</span> veya sürükleyin
             </div>
             <p id="file-chosen" class="text-xs font-mono text-[#E05252] font-medium">Dosya seçilmedi</p>
-            <p class="text-[11px] text-zinc-500">Tarih, Açıklama ve Tutar sütunları içeren CSV formatı</p>
+            <p class="text-[11px] text-zinc-500">Banka CSV veya PDF e-ekstre formatları desteklenir</p>
           </div>
         </div>
       </div>
 
       <div class="bg-[#141519] rounded-xl p-4 border border-[#262830] text-xs text-zinc-400 space-y-1.5">
         <div class="font-semibold text-zinc-300 flex items-center gap-1.5">
-          <span class="text-[#E05252]">ℹ</span> Desteklenen Banka CSV Biçimleri:
+          <span class="text-[#E05252]">ℹ</span> Desteklenen Banka Formatları:
         </div>
-        <p>• Tarih formatları: <code class="text-zinc-200 font-mono">15.08.2026</code>, <code class="text-zinc-200 font-mono">15/08/2026</code>, <code class="text-zinc-200 font-mono">2026-08-15</code></p>
-        <p>• Tutar formatları: <code class="text-[#E05252] font-mono">-150,50</code>, <code class="text-zinc-200 font-mono">1.250,50 ₺</code> veya ayrı Borç / Alacak sütunları</p>
-        <p>• Noktalı virgül (<code class="text-zinc-200">;</code>) ve standart virgül (<code class="text-zinc-200">,</code>) ayraçları otomatik tanınır.</p>
+        <p>• <span class="text-zinc-200 font-medium">PDF Ekstreler:</span> Garanti BBVA, İş Bankası, Yapı Kredi, Akbank, QNB, Enpara, Ziraat vb. e-ekstreler.</p>
+        <p>• <span class="text-zinc-200 font-medium">CSV Formatları:</span> Noktalı virgül (<code class="text-zinc-200">;</code>) veya virgül (<code class="text-zinc-200">,</code>) ayrılmış dosyalar.</p>
+        <p>• <span class="text-zinc-200 font-medium">Tutar Gösterimleri:</span> Pozitif/Negatif, Borç(B) / Alacak(A) veya ayrı sütunlar otomatik algılanır.</p>
       </div>
 
       <div class="pt-2">

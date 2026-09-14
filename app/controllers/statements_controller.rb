@@ -20,19 +20,26 @@ class StatementsController < ApplicationController
 
     if uploaded_file.blank?
       @statement = Statement.new(bank_name: bank_name)
-      flash.now[:alert] = "Lütfen yüklenecek bir CSV dosyası seçin."
+      flash.now[:alert] = "Lütfen yüklenecek bir CSV veya PDF dosyası seçin."
       return render :new, status: :unprocessable_entity
     end
 
+    filename = uploaded_file.original_filename
+    is_pdf = filename.downcase.end_with?(".pdf") || uploaded_file.content_type == "application/pdf"
+
     @statement = Statement.new(
-      source_filename: uploaded_file.original_filename,
+      source_filename: filename,
       bank_name: bank_name,
       imported_at: Time.current,
       status: :uploaded
     )
 
     if @statement.save
-      parser = StatementParsers::CsvParser.new(uploaded_file, statement: @statement)
+      parser = if is_pdf
+                 StatementParsers::PdfParser.new(uploaded_file, statement: @statement)
+               else
+                 StatementParsers::CsvParser.new(uploaded_file, statement: @statement)
+               end
       result = parser.call
 
       if result[:success]
