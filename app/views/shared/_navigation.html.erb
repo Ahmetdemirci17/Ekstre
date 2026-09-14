@@ -1,28 +1,28 @@
-<nav class="sticky top-0 z-50 bg-[#0A0A0C]/95 backdrop-blur-md border-b border-zinc-800/80 text-white">
+<nav class="sticky top-0 z-50 bg-[#141519] border-b border-[#262830] text-[#ECEEF2]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
-      <div class="flex items-center gap-3">
-        <%= link_to root_path, class: "flex items-center gap-2 text-xl font-black tracking-tight text-white hover:opacity-90 transition-opacity" do %>
-          <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white font-black text-sm shadow-md shadow-red-600/30">
+      <div class="flex items-center gap-4">
+        <%= link_to root_path, class: "flex items-center gap-2.5 hover:opacity-90 transition-opacity" do %>
+          <div class="w-8 h-8 rounded-lg bg-[#B91C1C] flex items-center justify-center text-zinc-100 font-bold text-sm border border-red-700/60">
             ₺
           </div>
-          <span class="font-extrabold tracking-wider text-base sm:text-lg uppercase">Ekstre<span class="text-red-500 ml-0.5">Pay</span></span>
+          <span class="font-bold tracking-tight text-base sm:text-lg text-white">Ekstre<span class="text-[#E05252] ml-0.5 font-semibold">Banking</span></span>
         <% end %>
 
-        <div class="hidden md:flex items-center gap-1 ml-8">
-          <%= link_to dashboard_path, class: "px-3.5 py-2 rounded-lg text-sm font-semibold transition-all #{current_page?(dashboard_path) || current_page?(root_path) ? 'bg-zinc-900 text-white border border-zinc-700/80' : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'}" do %>
+        <div class="hidden md:flex items-center gap-1.5 ml-6">
+          <%= link_to dashboard_path, class: "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors #{current_page?(dashboard_path) || current_page?(root_path) ? 'bg-[#1F2128] text-white border border-[#2E303A]' : 'text-zinc-400 hover:text-white hover:bg-[#1A1B22]'}" do %>
             Finansal Özet
           <% end %>
-          <%= link_to statements_path, class: "px-3.5 py-2 rounded-lg text-sm font-semibold transition-all #{current_page?(statements_path) ? 'bg-zinc-900 text-white border border-zinc-700/80' : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'}" do %>
+          <%= link_to statements_path, class: "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors #{current_page?(statements_path) ? 'bg-[#1F2128] text-white border border-[#2E303A]' : 'text-zinc-400 hover:text-white hover:bg-[#1A1B22]'}" do %>
             Ekstrelerim
           <% end %>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md shadow-red-600/20 transition-all active:scale-[0.98]" do %>
+        <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#B91C1C] hover:bg-[#991B1B] text-zinc-100 font-medium text-xs sm:text-sm tracking-normal transition-colors border border-red-700/60 active:scale-[0.99]" do %>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
           <span>Ekstre İçe Aktar</span>
         <% end %>
@@ -30,3 +30,4 @@
     </div>
   </div>
 </nav>
+

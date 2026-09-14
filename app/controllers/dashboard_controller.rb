@@ -62,24 +62,28 @@ class DashboardController < ApplicationController
         {
           label: "Harcamalar (Gider)",
           data: expense_data,
-          borderColor: "#DC2626",
-          backgroundColor: "rgba(220, 38, 38, 0.12)",
-          borderWidth: 2.5,
-          tension: 0.35,
+          borderColor: "#B91C1C",
+          backgroundColor: "rgba(185, 28, 28, 0.08)",
+          borderWidth: 2,
+          tension: 0.25,
           fill: true,
-          pointBackgroundColor: "#EF4444",
-          pointRadius: 4
+          pointBackgroundColor: "#B91C1C",
+          pointBorderColor: "#18191E",
+          pointBorderWidth: 1.5,
+          pointRadius: 3.5
         },
         {
           label: "Gelirler",
           data: income_data,
-          borderColor: "#10B981",
-          backgroundColor: "rgba(16, 185, 129, 0.10)",
-          borderWidth: 2.5,
-          tension: 0.35,
+          borderColor: "#059669",
+          backgroundColor: "rgba(5, 150, 105, 0.08)",
+          borderWidth: 2,
+          tension: 0.25,
           fill: true,
-          pointBackgroundColor: "#10B981",
-          pointRadius: 4
+          pointBackgroundColor: "#059669",
+          pointBorderColor: "#18191E",
+          pointBorderWidth: 1.5,
+          pointRadius: 3.5
         }
       ]
     }
@@ -106,7 +110,7 @@ class DashboardController < ApplicationController
         {
           data: cat_values,
           backgroundColor: cat_colors,
-          borderColor: "#0F172A",
+          borderColor: "#18191E",
           borderWidth: 2
         }
       ]

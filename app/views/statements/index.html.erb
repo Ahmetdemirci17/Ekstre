@@ -1,52 +1,52 @@
 <div class="space-y-6">
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-zinc-900">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-[#262830]">
     <div>
       <div class="flex items-center gap-2 mb-1">
-        <span class="inline-block w-2 h-2 rounded-full bg-red-600"></span>
-        <span class="text-xs font-bold uppercase tracking-wider text-red-500">Ekstre Yönetimi</span>
+        <span class="inline-block w-2 h-2 rounded-full bg-[#B91C1C]"></span>
+        <span class="text-xs font-semibold uppercase tracking-wider text-red-400">Ekstre Yönetimi</span>
       </div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Yüklenen Ekstreler</h1>
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Yüklenen Ekstreler</h1>
       <p class="text-xs sm:text-sm text-zinc-400 mt-1">İçe aktarılan tüm hesap ekstreleri ve yapay zeka analiz durumları.</p>
     </div>
-    <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-600/20 transition-all active:scale-[0.98]" do %>
+    <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#B91C1C] hover:bg-[#991B1B] text-zinc-100 font-medium text-xs sm:text-sm transition-colors border border-red-700/60 active:scale-[0.99]" do %>
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
       </svg>
       <span>Yeni Ekstre Yükle</span>
     <% end %>
   </div>
 
   <% if @statements.empty? %>
-    <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-12 text-center shadow-xl">
-      <div class="w-14 h-14 rounded-2xl bg-zinc-900 text-zinc-400 border border-zinc-800 flex items-center justify-center mx-auto mb-4 text-xl">
+    <div class="bg-[#18191E] border border-[#262830] rounded-xl p-12 text-center">
+      <div class="w-12 h-12 rounded-xl bg-[#141519] text-zinc-400 border border-[#262830] flex items-center justify-center mx-auto mb-4 text-xl">
         📁
       </div>
-      <h3 class="text-base font-bold text-white">Kayıtlı Ekstre Bulunamadı</h3>
+      <h3 class="text-base font-semibold text-white">Kayıtlı Ekstre Bulunamadı</h3>
       <p class="text-xs sm:text-sm text-zinc-400 mt-1 mb-6">İlk banka ekstrenizi yükleyerek hemen harcama analizine başlayabilirsiniz.</p>
-      <%= link_to "Ekstre Yükle", new_statement_path, class: "inline-flex items-center px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-red-600/20" %>
+      <%= link_to "Ekstre Yükle", new_statement_path, class: "inline-flex items-center px-4 py-2 rounded-lg bg-[#B91C1C] hover:bg-[#991B1B] text-zinc-100 font-medium text-xs sm:text-sm transition-colors border border-red-700/60" %>
     </div>
   <% else %>
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 gap-3.5">
       <% @statements.each do |statement| %>
-        <div class="bg-[#121215] border border-zinc-800 hover:border-zinc-700 rounded-2xl p-5 transition-all shadow-lg">
+        <div class="bg-[#18191E] border border-[#262830] hover:border-[#353844] rounded-xl p-5 transition-colors">
           <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div class="space-y-1.5">
               <div class="flex items-center gap-2.5">
-                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-red-600/10 text-red-500 border border-red-600/25">
+                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-[#241416] text-[#E05252] border border-[#3E1D22]">
                   <%= statement.bank_name.presence || "Banka Belirtilmedi" %>
                 </span>
                 <span class="text-xs text-zinc-500 font-tabular">
                   <%= statement.imported_at.strftime("%d.%m.%Y • %H:%M") %>
                 </span>
               </div>
-              <h3 class="text-base font-bold text-white tracking-tight">
+              <h3 class="text-base font-semibold text-white tracking-tight">
                 <%= statement.source_filename %>
               </h3>
               <p class="text-xs text-zinc-400">
-                Toplam <span class="font-bold text-white"><%= statement.transactions.count %></span> işlem 
-                • Gider: <span class="font-bold text-red-400 font-tabular"><%= sprintf("%.2f ₺", statement.total_spent) %></span>
+                Toplam <span class="font-semibold text-zinc-200"><%= statement.transactions.count %></span> işlem 
+                • Gider: <span class="font-semibold text-[#E05252] font-tabular"><%= sprintf("%.2f ₺", statement.total_spent) %></span>
                 <% if statement.total_income > 0 %>
-                  • Gelir: <span class="font-bold text-emerald-400 font-tabular"><%= sprintf("%.2f ₺", statement.total_income) %></span>
+                  • Gelir: <span class="font-semibold text-[#34D399] font-tabular"><%= sprintf("%.2f ₺", statement.total_income) %></span>
                 <% end %>
               </p>
             </div>
@@ -56,17 +56,17 @@
               <div class="w-full sm:w-44 space-y-1">
                 <div class="flex justify-between text-xs">
                   <span class="text-zinc-400 font-medium">Kategorilenme</span>
-                  <span class="font-bold font-tabular text-red-400">%<%= statement.categorization_percentage %></span>
+                  <span class="font-semibold font-tabular text-[#E05252]">%<%= statement.categorization_percentage %></span>
                 </div>
-                <div class="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
-                  <div class="h-full bg-red-600 rounded-full" style="width: <%= statement.categorization_percentage %>%"></div>
+                <div class="w-full h-1.5 bg-[#141519] rounded-full overflow-hidden border border-[#262830]">
+                  <div class="h-full bg-[#B91C1C] rounded-full" style="width: <%= statement.categorization_percentage %>%"></div>
                 </div>
               </div>
 
               <!-- Action buttons -->
               <div class="flex items-center gap-2">
-                <%= link_to "İşlemleri İncele", statement_path(statement), class: "px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-xs font-bold text-white transition-colors" %>
-                <%= button_to "Sil", statement_path(statement), method: :delete, data: { turbo_confirm: "Bu ekstreyi ve bağlı tüm işlemleri silmek istediğinize emin misiniz?" }, class: "px-3 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 text-red-400 text-xs font-semibold transition-colors cursor-pointer" %>
+                <%= link_to "İşlemleri İncele", statement_path(statement), class: "px-3.5 py-2 rounded-lg bg-[#22242C] hover:bg-[#2A2D37] border border-[#2E303A] text-xs font-medium text-zinc-200 transition-colors" %>
+                <%= button_to "Sil", statement_path(statement), method: :delete, data: { turbo_confirm: "Bu ekstreyi ve bağlı tüm işlemleri silmek istediğinize emin misiniz?" }, class: "px-3 py-2 rounded-lg bg-[#241416] hover:bg-[#341619] border border-[#3E1D22] text-[#E05252] text-xs font-medium transition-colors cursor-pointer" %>
               </div>
             </div>
           </div>
@@ -75,3 +75,4 @@
     </div>
   <% end %>
 </div>
+
