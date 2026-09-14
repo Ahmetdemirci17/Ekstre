@@ -1,65 +1,72 @@
 <div class="space-y-6">
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-zinc-900">
     <div>
-      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Ekstre Geçmişi</h1>
-      <p class="text-sm text-slate-400 mt-1">Yüklediğiniz tüm banka ekstreleri ve kategorizasyon durumları.</p>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="inline-block w-2 h-2 rounded-full bg-red-600"></span>
+        <span class="text-xs font-bold uppercase tracking-wider text-red-500">Ekstre Yönetimi</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Yüklenen Ekstreler</h1>
+      <p class="text-xs sm:text-sm text-zinc-400 mt-1">İçe aktarılan tüm hesap ekstreleri ve yapay zeka analiz durumları.</p>
     </div>
-    <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]" do %>
-      <span>+</span> Yeni Ekstre Yükle
+    <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-600/20 transition-all active:scale-[0.98]" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+      </svg>
+      <span>Yeni Ekstre Yükle</span>
     <% end %>
   </div>
 
   <% if @statements.empty? %>
-    <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-12 text-center">
-      <div class="w-16 h-16 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mx-auto mb-4 text-2xl">
-        📄
+    <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-12 text-center shadow-xl">
+      <div class="w-14 h-14 rounded-2xl bg-zinc-900 text-zinc-400 border border-zinc-800 flex items-center justify-center mx-auto mb-4 text-xl">
+        📁
       </div>
-      <h3 class="text-lg font-semibold text-slate-200">Henüz ekstre yüklenmedi</h3>
-      <p class="text-sm text-slate-500 mt-1 mb-6">Hemen ilk banka ekstrenizi yükleyerek harcamalarınızı analiz etmeye başlayın.</p>
-      <%= link_to "İlk Ekstreni Yükle", new_statement_path, class: "inline-flex items-center px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm transition-all" %>
+      <h3 class="text-base font-bold text-white">Kayıtlı Ekstre Bulunamadı</h3>
+      <p class="text-xs sm:text-sm text-zinc-400 mt-1 mb-6">İlk banka ekstrenizi yükleyerek hemen harcama analizine başlayabilirsiniz.</p>
+      <%= link_to "Ekstre Yükle", new_statement_path, class: "inline-flex items-center px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-red-600/20" %>
     </div>
   <% else %>
     <div class="grid grid-cols-1 gap-4">
       <% @statements.each do |statement| %>
-        <div class="bg-slate-900/70 border border-slate-800/80 hover:border-slate-700/80 rounded-2xl p-5 sm:p-6 transition-all backdrop-blur-sm">
+        <div class="bg-[#121215] border border-zinc-800 hover:border-zinc-700 rounded-2xl p-5 transition-all shadow-lg">
           <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-3">
-                <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2.5">
+                <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-red-600/10 text-red-500 border border-red-600/25">
                   <%= statement.bank_name.presence || "Banka Belirtilmedi" %>
                 </span>
-                <span class="text-xs text-slate-500">
-                  <%= statement.imported_at.strftime("%d.%m.%Y %H:%M") %>
+                <span class="text-xs text-zinc-500 font-tabular">
+                  <%= statement.imported_at.strftime("%d.%m.%Y • %H:%M") %>
                 </span>
               </div>
-              <h3 class="text-lg font-semibold text-white tracking-tight flex items-center gap-2">
+              <h3 class="text-base font-bold text-white tracking-tight">
                 <%= statement.source_filename %>
               </h3>
-              <p class="text-xs text-slate-400">
-                Toplam <span class="font-semibold text-slate-200"><%= statement.transactions.count %></span> işlem 
-                • Toplam Harcama: <span class="font-semibold text-rose-400"><%= sprintf("%.2f TL", statement.total_spent) %></span>
+              <p class="text-xs text-zinc-400">
+                Toplam <span class="font-bold text-white"><%= statement.transactions.count %></span> işlem 
+                • Gider: <span class="font-bold text-red-400 font-tabular"><%= sprintf("%.2f ₺", statement.total_spent) %></span>
                 <% if statement.total_income > 0 %>
-                  • Gelir: <span class="font-semibold text-emerald-400"><%= sprintf("%.2f TL", statement.total_income) %></span>
+                  • Gelir: <span class="font-bold text-emerald-400 font-tabular"><%= sprintf("%.2f ₺", statement.total_income) %></span>
                 <% end %>
               </p>
             </div>
 
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto justify-end">
-              <!-- Progress -->
+              <!-- Progress Bar -->
               <div class="w-full sm:w-44 space-y-1">
                 <div class="flex justify-between text-xs">
-                  <span class="text-slate-400">Kategorilendi</span>
-                  <span class="font-semibold text-emerald-400">%<%= statement.categorization_percentage %></span>
+                  <span class="text-zinc-400 font-medium">Kategorilenme</span>
+                  <span class="font-bold font-tabular text-red-400">%<%= statement.categorization_percentage %></span>
                 </div>
-                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style="width: <%= statement.categorization_percentage %>%"></div>
+                <div class="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
+                  <div class="h-full bg-red-600 rounded-full" style="width: <%= statement.categorization_percentage %>%"></div>
                 </div>
               </div>
 
               <!-- Action buttons -->
               <div class="flex items-center gap-2">
-                <%= link_to "İncele", statement_path(statement), class: "px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sm font-semibold text-slate-200 transition-colors" %>
-                <%= button_to "Sil", statement_path(statement), method: :delete, data: { turbo_confirm: "Bu ekstreyi ve tüm işlemlerini silmek istediğinize emin misiniz?" }, class: "px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 text-sm font-medium transition-colors cursor-pointer" %>
+                <%= link_to "İşlemleri İncele", statement_path(statement), class: "px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-xs font-bold text-white transition-colors" %>
+                <%= button_to "Sil", statement_path(statement), method: :delete, data: { turbo_confirm: "Bu ekstreyi ve bağlı tüm işlemleri silmek istediğinize emin misiniz?" }, class: "px-3 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 text-red-400 text-xs font-semibold transition-colors cursor-pointer" %>
               </div>
             </div>
           </div>

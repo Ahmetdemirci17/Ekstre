@@ -106,20 +106,28 @@ class GeminiCategorizer
   def fallback_categorize(transactions)
     mapping = {}
     transactions.each do |tx|
-      desc = tx.description.to_s.downcase
+      desc = tx.description.to_s
+               .tr("İIı", "iii")
+               .tr("Şş", "ss")
+               .tr("Ğğ", "gg")
+               .tr("Çç", "cc")
+               .tr("Öö", "oo")
+               .tr("Üü", "uu")
+               .downcase
+
       cat = if tx.amount.to_f > 0
               "Maaş / Gelir"
-            elsif desc.match?(/migros|bim|a101|sok|şok|carrefour|market|fırın|kasap|manav|şarküteri/i)
+            elsif desc.match?(/migros|bim|a101|sok|carrefour|market|firin|kasap|manav|sarkuteri/i)
               "Market"
-            elsif desc.match?(/fatura|turkcell|vodafone|turk telekom|enerjisa|iski|igdas|igdaş|elektrik|su|doğalgaz|internet/i)
+            elsif desc.match?(/fatura|turkcell|vodafone|turk telekom|enerjisa|iski|igdas|elektrik|su|dogalgaz|internet/i)
               "Fatura"
             elsif desc.match?(/kira|ev sahibi|aidat|apartman/i)
               "Kira & Konut"
-            elsif desc.match?(/netflix|spotify|sinema|biletix|bilet|kafe|cafe|restaurant|restoran|steam|oyun/i)
+            elsif desc.match?(/netflix|spotify|sinema|biletix|bilet|kafe|cafe|restaurant|restoran|steam|oyun|starbucks/i)
               "Eğlence"
-            elsif desc.match?(/uber|taksi|metro|iett|marmaray|benzin|opet|shell|bp|otopark|hgs|ogs/i)
+            elsif desc.match?(/uber|taksi|metro|iett|marmaray|benzin|opet|shell|bp|otopark|hgs|ogs|ulasim|istanbulkart/i)
               "Ulaşım"
-            elsif desc.match?(/eczane|hastane|doktor|klinik|medikal/i)
+            elsif desc.match?(/eczane|hastane|doktor|klinik|medikal|saglik/i)
               "Sağlık"
             else
               "Diğer"

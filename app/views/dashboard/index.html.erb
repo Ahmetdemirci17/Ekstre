@@ -1,113 +1,121 @@
 <div class="space-y-8">
-  <!-- Header with Month Switcher -->
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+  <!-- Header with Period Switcher -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-zinc-900">
     <div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Bütçe & Harcama Özeti</h1>
-      <p class="text-sm text-slate-400 mt-1">
-        Dönem: <span class="font-semibold text-emerald-400"><%= @target_date.strftime("%B %Y") %></span>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="inline-block w-2 h-2 rounded-full bg-red-600"></span>
+        <span class="text-xs font-bold uppercase tracking-wider text-red-500">Bütçe Analitiği</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Finansal Kontrol Paneli</h1>
+      <p class="text-xs sm:text-sm text-zinc-400 mt-1">
+        Dönem: <span class="font-bold text-white"><%= @target_date.strftime("%B %Y") %></span>
       </p>
     </div>
 
-    <div class="flex items-center gap-2 bg-slate-900/80 border border-slate-800 p-1.5 rounded-xl">
-      <%= link_to dashboard_path(date: (@target_date - 1.month).to_s), class: "p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors", title: "Önceki Ay" do %>
-        ←
+    <div class="flex items-center gap-1.5 bg-[#121215] border border-zinc-800 p-1 rounded-xl shadow-inner">
+      <%= link_to dashboard_path(date: (@target_date - 1.month).to_s), class: "px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-xs font-semibold transition-colors", title: "Önceki Ay" do %>
+        ← Önceki
       <% end %>
-      <span class="px-3 text-xs font-semibold text-slate-300">
-        <%= @target_date.strftime("%m/%Y") %>
+      <span class="px-3 py-1 text-xs font-mono font-bold text-zinc-200 bg-zinc-900 rounded-md border border-zinc-800">
+        <%= @target_date.strftime("%m / %Y") %>
       </span>
-      <%= link_to dashboard_path(date: (@target_date + 1.month).to_s), class: "p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors", title: "Sonraki Ay" do %>
-        →
+      <%= link_to dashboard_path(date: (@target_date + 1.month).to_s), class: "px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 text-xs font-semibold transition-colors", title: "Sonraki Ay" do %>
+        Sonraki →
       <% end %>
     </div>
   </div>
 
   <% if @recent_transactions.empty? %>
     <!-- Welcome Empty State -->
-    <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 sm:p-12 text-center shadow-2xl">
-      <div class="w-20 h-20 rounded-3xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto mb-6 text-3xl shadow-xl shadow-emerald-500/10">
+    <div class="bg-[#121215] border border-zinc-800/90 rounded-2xl p-10 sm:p-14 text-center shadow-2xl">
+      <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 border border-red-600/20 flex items-center justify-center mx-auto mb-5 text-2xl shadow-lg shadow-red-600/10">
         💳
       </div>
-      <h2 class="text-2xl font-bold text-white mb-2">Hoş Geldiniz! Henüz Bir Ekstre Yüklenmedi</h2>
-      <p class="text-slate-400 max-w-lg mx-auto mb-8 text-sm">
-        Banka ekstrenizi (CSV) yükleyerek harcamalarınızı saniyeler içinde yapay zeka ile kategorize edin ve grafiklerle bütçenizi yönetmeye başlayın.
+      <h2 class="text-xl sm:text-2xl font-bold text-white mb-2">Henüz Bir Banka Ekstresi Yüklenmedi</h2>
+      <p class="text-zinc-400 max-w-md mx-auto mb-8 text-xs sm:text-sm leading-relaxed">
+        Banka hareketlerinizi içeren CSV dosyanızı yükleyerek harcamalarınızı yapay zeka ile otomatik kategorilere ayırın ve anında finansal analizinizi görün.
       </p>
-      <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-base shadow-xl shadow-emerald-500/20 transition-all hover:scale-105 active:scale-95" do %>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-xl shadow-red-600/25 transition-all hover:scale-[1.02] active:scale-[0.98]" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
         </svg>
-        <span>İlk Ekstrenizi Yükleyin</span>
+        <span>Ekstre Yükle</span>
       <% end %>
     </div>
   <% else %>
     <!-- KPI Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Total Spent -->
-      <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-5 backdrop-blur-sm relative overflow-hidden group">
-        <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
-          <span>Bu Ay Toplam Harcama</span>
-          <span class="text-rose-400 text-base">📉</span>
+      <!-- Total Spent (Red Accent Card) -->
+      <div class="bg-[#121215] border-t-2 border-t-red-600 border border-zinc-800 rounded-2xl p-5 shadow-lg relative">
+        <div class="flex items-center justify-between text-xs font-semibold text-zinc-400">
+          <span>Bu Ay Toplam Gider</span>
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span class="text-2xl sm:text-3xl font-extrabold text-rose-400"><%= sprintf("%.2f TL", @this_month_spent) %></span>
+        <div class="mt-3">
+          <span class="text-2xl sm:text-3xl font-black tracking-tight text-white font-tabular">
+            <%= sprintf("%.2f ₺", @this_month_spent) %>
+          </span>
         </div>
         <div class="mt-2 text-xs">
           <% if @mom_change.present? %>
             <% if @mom_change > 0 %>
-              <span class="text-rose-400 font-semibold">▲ %<%= @mom_change %></span>
-              <span class="text-slate-500 ml-1">geçen aya göre artış</span>
+              <span class="text-red-400 font-bold">▲ %<%= @mom_change %></span>
+              <span class="text-zinc-500 ml-1">önceki aya göre artış</span>
             <% else %>
-              <span class="text-emerald-400 font-semibold">▼ %<%= @mom_change.abs %></span>
-              <span class="text-slate-500 ml-1">geçen aya göre düşüş</span>
+              <span class="text-emerald-400 font-bold">▼ %<%= @mom_change.abs %></span>
+              <span class="text-zinc-500 ml-1">önceki aya göre tasarruf</span>
             <% end %>
           <% else %>
-            <span class="text-slate-500">Geçen ay verisi yok</span>
+            <span class="text-zinc-500">İlk ekstre dönemi</span>
           <% end %>
         </div>
       </div>
 
       <!-- Total Income -->
-      <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-5 backdrop-blur-sm">
-        <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
+      <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-xs font-semibold text-zinc-400">
           <span>Bu Ay Toplam Gelir</span>
-          <span class="text-emerald-400 text-base">📈</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span class="text-2xl sm:text-3xl font-extrabold text-emerald-400"><%= sprintf("%.2f TL", @this_month_income) %></span>
+        <div class="mt-3">
+          <span class="text-2xl sm:text-3xl font-black tracking-tight text-emerald-400 font-tabular">
+            <%= sprintf("+%.2f ₺", @this_month_income) %>
+          </span>
         </div>
-        <p class="mt-2 text-xs text-slate-500">
-          Maaş, prim ve gelen havaleler
+        <p class="mt-2 text-xs text-zinc-500">
+          Maaş, prim ve gelen transferler
         </p>
       </div>
 
       <!-- Net Balance -->
       <% net_balance = @this_month_income - @this_month_spent %>
-      <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-5 backdrop-blur-sm">
-        <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
-          <span>Net Tasarruf / Bakiye</span>
-          <span class="text-sky-400 text-base">⚖️</span>
+      <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-xs font-semibold text-zinc-400">
+          <span>Net Finansal Durum</span>
+          <span class="w-2 h-2 rounded-full <%= net_balance >= 0 ? 'bg-emerald-500' : 'bg-red-500' %>"></span>
         </div>
-        <div class="mt-2 flex items-baseline gap-2">
-          <span class="text-2xl sm:text-3xl font-extrabold <%= net_balance >= 0 ? 'text-emerald-400' : 'text-rose-400' %>">
-            <%= net_balance >= 0 ? "+#{sprintf('%.2f TL', net_balance)}" : sprintf("%.2f TL", net_balance) %>
+        <div class="mt-3">
+          <span class="text-2xl sm:text-3xl font-black tracking-tight <%= net_balance >= 0 ? 'text-white' : 'text-red-400' %> font-tabular">
+            <%= net_balance >= 0 ? "+#{sprintf('%.2f ₺', net_balance)}" : sprintf("%.2f ₺", net_balance) %>
           </span>
         </div>
-        <p class="mt-2 text-xs text-slate-500">
-          <%= net_balance >= 0 ? "Bütçe pozitif durumda" : "Harcamalar geliri aştı" %>
+        <p class="mt-2 text-xs text-zinc-500">
+          <%= net_balance >= 0 ? "Bütçe fazlası / Tasarruf" : "Gelir açığı mevcut" %>
         </p>
       </div>
 
       <!-- Top Category -->
-      <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-5 backdrop-blur-sm">
-        <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
-          <span>En Çok Harcanan Kategori</span>
-          <span class="text-purple-400 text-base">🏷️</span>
+      <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-5 shadow-lg">
+        <div class="flex items-center justify-between text-xs font-semibold text-zinc-400">
+          <span>Ağırlıklı Harcama</span>
+          <span class="text-xs text-zinc-400">🏷️</span>
         </div>
-        <div class="mt-2 flex items-center gap-2">
+        <div class="mt-3 flex items-center gap-2">
           <span class="w-3 h-3 rounded-full shrink-0" style="background-color: <%= @top_category_color %>"></span>
-          <span class="text-xl sm:text-2xl font-extrabold text-white truncate"><%= @top_category_name %></span>
+          <span class="text-xl sm:text-2xl font-black text-white truncate"><%= @top_category_name %></span>
         </div>
-        <p class="mt-2 text-xs text-slate-400">
-          <span class="font-semibold text-rose-300"><%= sprintf("%.2f TL", @top_category_amount) %></span> harcandı
+        <p class="mt-2 text-xs text-zinc-400 font-tabular">
+          <span class="font-bold text-red-400"><%= sprintf("%.2f ₺", @top_category_amount) %></span> harcandı
         </p>
       </div>
     </div>
@@ -115,13 +123,15 @@
     <!-- Charts Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Monthly Trend Line Chart (2 Cols) -->
-      <div class="lg:col-span-2 bg-slate-900/70 border border-slate-800/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-4">
+      <div class="lg:col-span-2 bg-[#121215] border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-zinc-900">
           <div>
-            <h2 class="text-base font-bold text-white">Aylık Harcama & Gelir Trendi</h2>
-            <p class="text-xs text-slate-400">Son 6 ayın harcama ve gelir akışı</p>
+            <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">Harcama & Gelir Trendi</h2>
+            <p class="text-xs text-zinc-400">Son 6 aylık nakit akışı değişimi</p>
           </div>
-          <span class="text-xs font-medium px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300">Son 6 Ay</span>
+          <span class="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">
+            6 Aylık Grafik
+          </span>
         </div>
         <div class="w-full h-64 relative">
           <canvas data-controller="chart"
@@ -130,12 +140,13 @@
                   data-chart-options-value='{
                     "responsive": true,
                     "maintainAspectRatio": false,
+                    "interaction": { "mode": "index", "intersect": false },
                     "plugins": {
-                      "legend": { "position": "top", "labels": { "color": "#94A3B8", "font": { "family": "Plus Jakarta Sans", "size": 11 } } }
+                      "legend": { "position": "top", "labels": { "color": "#A1A1AA", "font": { "family": "Plus Jakarta Sans", "weight": "bold", "size": 11 } } }
                     },
                     "scales": {
-                      "x": { "grid": { "color": "rgba(51, 65, 85, 0.4)" }, "ticks": { "color": "#94A3B8" } },
-                      "y": { "grid": { "color": "rgba(51, 65, 85, 0.4)" }, "ticks": { "color": "#94A3B8" } }
+                      "x": { "grid": { "color": "rgba(255, 255, 255, 0.05)" }, "ticks": { "color": "#71717A", "font": { "size": 11 } } },
+                      "y": { "grid": { "color": "rgba(255, 255, 255, 0.05)" }, "ticks": { "color": "#71717A", "font": { "size": 11 } } }
                     }
                   }'>
           </canvas>
@@ -143,17 +154,17 @@
       </div>
 
       <!-- Current Month Category Breakdown Doughnut Chart (1 Col) -->
-      <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-4">
+      <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-zinc-900">
           <div>
-            <h2 class="text-base font-bold text-white">Kategori Dağılımı</h2>
-            <p class="text-xs text-slate-400">Bu ayki giderlerin oransal dağılımı</p>
+            <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">Kategori Dağılımı</h2>
+            <p class="text-xs text-zinc-400">Bu ayki harcamaların dökümü</p>
           </div>
         </div>
         <% if @category_chart_data[:labels].empty? %>
-          <div class="h-64 flex flex-col items-center justify-center text-slate-500 text-sm">
-            <span>📊</span>
-            <p class="mt-2">Bu ay için harcama verisi yok</p>
+          <div class="h-64 flex flex-col items-center justify-center text-zinc-600 text-xs">
+            <span class="text-2xl mb-2">📊</span>
+            <p>Bu ay için harcama kaydı bulunmuyor</p>
           </div>
         <% else %>
           <div class="w-full h-64 relative">
@@ -163,9 +174,9 @@
                     data-chart-options-value='{
                       "responsive": true,
                       "maintainAspectRatio": false,
-                      "cutout": "68%",
+                      "cutout": "70%",
                       "plugins": {
-                        "legend": { "position": "bottom", "labels": { "color": "#94A3B8", "font": { "family": "Plus Jakarta Sans", "size": 11 }, "boxWidth": 12 } }
+                        "legend": { "position": "bottom", "labels": { "color": "#A1A1AA", "font": { "family": "Plus Jakarta Sans", "size": 11 }, "boxWidth": 10 } }
                       }
                     }'>
             </canvas>
@@ -175,47 +186,47 @@
     </div>
 
     <!-- Recent Transactions Table -->
-    <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl overflow-hidden backdrop-blur-sm shadow-xl">
-      <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+    <div class="bg-[#121215] border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
+      <div class="p-5 border-b border-zinc-900 flex items-center justify-between">
         <div>
-          <h2 class="text-base font-bold text-white">Son İşlemler</h2>
-          <p class="text-xs text-slate-400">En son içe aktarılan banka hareketleri</p>
+          <h2 class="text-sm sm:text-base font-bold text-white tracking-tight">Son Banka Hareketleri</h2>
+          <p class="text-xs text-zinc-400">Sistemde kayıtlı en son işlemler</p>
         </div>
-        <%= link_to "Tüm Ekstreleri Gör →", statements_path, class: "text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors" %>
+        <%= link_to "Tüm Ekstreler →", statements_path, class: "text-xs font-bold text-red-500 hover:text-red-400 transition-colors" %>
       </div>
 
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm text-slate-300">
-          <thead class="bg-slate-950/60 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800/80">
+        <table class="w-full text-left text-sm text-zinc-300">
+          <thead class="bg-[#0D0D10] text-[11px] uppercase tracking-wider text-zinc-400 border-b border-zinc-800/80">
             <tr>
-              <th class="py-3 px-4 font-semibold">Tarih</th>
-              <th class="py-3 px-4 font-semibold">Açıklama</th>
-              <th class="py-3 px-4 font-semibold text-right">Tutar</th>
-              <th class="py-3 px-4 font-semibold">Kategori</th>
+              <th class="py-3 px-4 font-bold">Tarih</th>
+              <th class="py-3 px-4 font-bold">İşlem Tanımı</th>
+              <th class="py-3 px-4 font-bold text-right">Tutar</th>
+              <th class="py-3 px-4 font-bold">Kategori</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800/60 font-normal">
+          <tbody class="divide-y divide-zinc-900 font-normal">
             <% @recent_transactions.each do |transaction| %>
-              <tr class="hover:bg-slate-800/40 transition-colors">
-                <td class="py-3 px-4 whitespace-nowrap text-xs font-mono text-slate-400">
+              <tr class="hover:bg-zinc-900/50 transition-colors">
+                <td class="py-3.5 px-4 whitespace-nowrap text-xs font-tabular text-zinc-400">
                   <%= transaction.date.strftime("%d.%m.%Y") %>
                 </td>
-                <td class="py-3 px-4 max-w-sm sm:max-w-md">
-                  <div class="font-medium text-white text-xs sm:text-sm truncate" title="<%= transaction.description %>">
+                <td class="py-3.5 px-4 max-w-sm sm:max-w-md">
+                  <div class="font-semibold text-white text-xs sm:text-sm truncate" title="<%= transaction.description %>">
                     <%= transaction.description %>
                   </div>
-                  <div class="text-[11px] text-slate-500">
+                  <div class="text-[11px] text-zinc-500">
                     <%= transaction.statement.bank_name.presence || transaction.statement.source_filename %>
                   </div>
                 </td>
-                <td class="py-3 px-4 whitespace-nowrap text-right font-semibold text-sm">
+                <td class="py-3.5 px-4 whitespace-nowrap text-right font-bold text-xs sm:text-sm font-tabular">
                   <% if transaction.amount.negative? %>
-                    <span class="text-rose-400"><%= sprintf("%.2f TL", transaction.amount) %></span>
+                    <span class="text-red-400"><%= sprintf("%.2f ₺", transaction.amount) %></span>
                   <% else %>
-                    <span class="text-emerald-400">+<%= sprintf("%.2f TL", transaction.amount) %></span>
+                    <span class="text-emerald-400">+<%= sprintf("%.2f ₺", transaction.amount) %></span>
                   <% end %>
                 </td>
-                <td class="py-3 px-4 whitespace-nowrap">
+                <td class="py-3.5 px-4 whitespace-nowrap">
                   <%= render "transactions/category_cell", transaction: transaction %>
                 </td>
               </tr>

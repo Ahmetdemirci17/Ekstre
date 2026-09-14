@@ -8,6 +8,26 @@ fatura:
   name: Fatura
   color: "#EF4444"
 
+ulasim:
+  name: Ulaşım
+  color: "#F59E0B"
+
+eglence:
+  name: Eğlence
+  color: "#8B5CF6"
+
+saglik:
+  name: Sağlık
+  color: "#EC4899"
+
+kira:
+  name: Kira & Konut
+  color: "#3B82F6"
+
+gelir:
+  name: Maaş / Gelir
+  color: "#059669"
+
 diger:
   name: Diğer
   color: "#6B7280"

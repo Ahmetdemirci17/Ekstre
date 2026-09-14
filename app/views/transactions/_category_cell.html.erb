@@ -2,29 +2,29 @@
   <%= form_with(model: transaction, url: transaction_path(transaction), method: :patch, class: "flex items-center gap-2") do |f| %>
     <div class="relative inline-flex items-center">
       <% if transaction.category %>
-        <span class="w-2.5 h-2.5 rounded-full mr-2 shrink-0" style="background-color: <%= transaction.category.color %>"></span>
+        <span class="w-2.5 h-2.5 rounded-full mr-2 shrink-0 shadow-sm" style="background-color: <%= transaction.category.color %>"></span>
       <% else %>
-        <span class="w-2.5 h-2.5 rounded-full mr-2 shrink-0 bg-slate-600"></span>
+        <span class="w-2.5 h-2.5 rounded-full mr-2 shrink-0 bg-zinc-600"></span>
       <% end %>
 
       <%= f.collection_select :category_id, 
             Category.order(:name), 
             :id, 
             :name, 
-            { include_blank: "Kategori Seçin..." }, 
+            { include_blank: "Kategori Ata..." }, 
             { 
-              class: "text-xs rounded-lg bg-slate-950 border border-slate-700 text-slate-200 py-1.5 px-2.5 pr-7 focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-colors cursor-pointer",
+              class: "text-xs font-medium rounded-lg bg-[#0D0D10] border border-zinc-700 text-zinc-200 py-1 px-2.5 pr-7 focus:ring-1 focus:ring-red-600 focus:border-red-600 transition-colors cursor-pointer",
               onchange: "this.form.requestSubmit()"
             } %>
     </div>
 
     <% if transaction.ai? %>
-      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20" title="Yapay zeka tarafından kategorilendirildi">
-        🤖 AI
+      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-600/10 text-red-500 border border-red-600/25" title="Yapay zeka (Gemini) tarafından atandı">
+        AI
       </span>
     <% elsif transaction.manual? %>
-      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20" title="Kullanıcı tarafından elle seçildi">
-        👤 Manuel
+      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-zinc-800 text-zinc-300 border border-zinc-700" title="Kullanıcı tarafından manuel seçildi">
+        Manuel
       </span>
     <% end %>
   <% end %>

@@ -60,21 +60,21 @@ class DashboardController < ApplicationController
       labels: trend_labels,
       datasets: [
         {
-          label: "Harcamalar",
+          label: "Harcamalar (Gider)",
           data: expense_data,
-          borderColor: "#F43F5E",
-          backgroundColor: "rgba(244, 63, 94, 0.15)",
+          borderColor: "#DC2626",
+          backgroundColor: "rgba(220, 38, 38, 0.12)",
           borderWidth: 2.5,
           tension: 0.35,
           fill: true,
-          pointBackgroundColor: "#F43F5E",
+          pointBackgroundColor: "#EF4444",
           pointRadius: 4
         },
         {
           label: "Gelirler",
           data: income_data,
           borderColor: "#10B981",
-          backgroundColor: "rgba(16, 185, 129, 0.15)",
+          backgroundColor: "rgba(16, 185, 129, 0.10)",
           borderWidth: 2.5,
           tension: 0.35,
           fill: true,

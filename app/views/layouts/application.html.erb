@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="tr" class="h-full bg-slate-950 text-slate-100">
+<html lang="tr" class="h-full bg-[#09090B] text-zinc-100 antialiased">
   <head>
-    <title><%= content_for(:title) || "EkstreAI — Bank Statement Budget Tracker" %></title>
+    <title><%= content_for(:title) || "Ekstre Banking — Bütçe & Harcama Takibi" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="EkstreAI">
+    <meta name="application-name" content="Ekstre Banking">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <%= yield :head %>
 
@@ -23,32 +23,36 @@
 
     <style>
       body {
-        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .font-tabular {
+        font-family: 'JetBrains Mono', monospace;
+        font-variant-numeric: tabular-nums;
       }
     </style>
   </head>
 
-  <body class="min-h-full flex flex-col bg-slate-950 text-slate-100 selection:bg-emerald-500 selection:text-slate-950">
+  <body class="min-h-full flex flex-col bg-[#09090B] text-zinc-100 selection:bg-red-600 selection:text-white">
     <%= render "shared/navigation" %>
 
     <!-- Flash Notifications -->
     <div id="flash-messages" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none px-4">
       <% if notice.present? %>
-        <div class="pointer-events-auto flex items-center justify-between p-4 rounded-xl bg-slate-900/90 border border-emerald-500/40 text-emerald-400 shadow-xl backdrop-blur-md animate-fade-in">
+        <div class="pointer-events-auto flex items-center justify-between p-4 rounded-xl bg-[#18181B] border-l-4 border-l-red-600 border border-zinc-800 text-white shadow-2xl backdrop-blur-md">
           <div class="flex items-center gap-3">
-            <span class="text-xl">✅</span>
-            <p class="text-sm font-medium text-slate-200"><%= notice %></p>
+            <span class="w-6 h-6 rounded-full bg-red-600/20 text-red-500 flex items-center justify-center font-bold text-xs">✓</span>
+            <p class="text-xs sm:text-sm font-medium text-zinc-200"><%= notice %></p>
           </div>
-          <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-sm ml-3">✕</button>
+          <button onclick="this.parentElement.remove()" class="text-zinc-500 hover:text-white text-xs ml-3 p-1">✕</button>
         </div>
       <% end %>
       <% if alert.present? %>
-        <div class="pointer-events-auto flex items-center justify-between p-4 rounded-xl bg-slate-900/90 border border-rose-500/40 text-rose-400 shadow-xl backdrop-blur-md animate-fade-in">
+        <div class="pointer-events-auto flex items-center justify-between p-4 rounded-xl bg-[#18181B] border-l-4 border-l-red-600 border border-red-900/50 text-white shadow-2xl backdrop-blur-md">
           <div class="flex items-center gap-3">
-            <span class="text-xl">⚠️</span>
-            <p class="text-sm font-medium text-slate-200"><%= alert %></p>
+            <span class="w-6 h-6 rounded-full bg-red-600/20 text-red-500 flex items-center justify-center font-bold text-xs">!</span>
+            <p class="text-xs sm:text-sm font-medium text-zinc-200"><%= alert %></p>
           </div>
-          <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-sm ml-3">✕</button>
+          <button onclick="this.parentElement.remove()" class="text-zinc-500 hover:text-white text-xs ml-3 p-1">✕</button>
         </div>
       <% end %>
     </div>
@@ -57,8 +61,12 @@
       <%= yield %>
     </main>
 
-    <footer class="border-t border-slate-900 py-6 text-center text-xs text-slate-500">
-      <p>EkstreAI &copy; <%= Date.current.year %> — Yapay Zeka Destekli Bütçe ve Ekstre Takip Sistemi</p>
+    <footer class="border-t border-zinc-900 py-6 text-center text-xs text-zinc-500">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <span class="w-2 h-2 rounded-full bg-red-600 inline-block"></span>
+        <span class="font-semibold text-zinc-400">Ekstre Banking</span>
+      </div>
+      <p>Bank Statement Budget Tracker &copy; <%= Date.current.year %></p>
     </footer>
   </body>
 </html>

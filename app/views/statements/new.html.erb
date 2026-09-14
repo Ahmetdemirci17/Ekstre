@@ -1,56 +1,60 @@
 <div class="max-w-2xl mx-auto">
   <div class="mb-8 text-center">
-    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4 shadow-lg shadow-emerald-500/10">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-600/10 text-red-500 border border-red-600/25 mb-4 shadow-lg shadow-red-600/15">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
       </svg>
     </div>
-    <h1 class="text-3xl font-bold tracking-tight text-white">Banka Ekstresi Yükle</h1>
-    <p class="mt-2 text-sm text-slate-400">
-      Banka hareketlerinizi içeren CSV dosyasını yükleyin. Yapay zeka tüm harcamaları otomatik olarak kategorilendirsin.
+    <div class="flex items-center justify-center gap-2 mb-1">
+      <span class="inline-block w-2 h-2 rounded-full bg-red-600"></span>
+      <span class="text-xs font-bold uppercase tracking-wider text-red-500">Güvenli İçe Aktarım</span>
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Banka Ekstresi Yükle</h1>
+    <p class="mt-2 text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
+      Hesap hareketlerinizi içeren CSV dosyasını yükleyin. Yapay zeka tüm harcamaları otomatik olarak analiz etsin.
     </p>
   </div>
 
-  <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-2xl">
+  <div class="bg-[#121215] border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
     <%= form_with(model: @statement, url: statements_path, multipart: true, class: "space-y-6") do |f| %>
       <div>
-        <label class="block text-sm font-medium text-slate-300 mb-2">Banka Adı (İsteğe Bağlı)</label>
+        <label class="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">Banka Kurumu (İsteğe Bağlı)</label>
         <%= f.select :bank_name, 
               ["Garanti BBVA", "İş Bankası", "Yapı Kredi", "Akbank", "Ziraat Bankası", "QNB Finansbank", "Enpara", "VakıfBank", "Diğer"], 
-              { include_blank: "Banka Seçin..." }, 
-              class: "w-full rounded-xl bg-slate-950 border border-slate-700 text-slate-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all" %>
+              { include_blank: "Banka Seçimi Yapın..." }, 
+              class: "w-full rounded-xl bg-[#0D0D10] border border-zinc-700 text-zinc-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all" %>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-slate-300 mb-2">Ekstre Dosyası (.CSV)</label>
-        <div class="relative border-2 border-dashed border-slate-700 hover:border-emerald-500/50 rounded-2xl p-8 text-center transition-colors bg-slate-950/40 group">
+        <label class="block text-xs font-bold text-zinc-300 uppercase tracking-wider mb-2">Ekstre Dosyası (.CSV)</label>
+        <div class="relative border-2 border-dashed border-zinc-700 hover:border-red-600/60 rounded-2xl p-8 text-center transition-colors bg-[#0D0D10] group cursor-pointer">
           <input type="file" name="statement[file]" id="statement_file" accept=".csv,text/csv" required
                  class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                  onchange="document.getElementById('file-chosen').textContent = this.files[0] ? this.files[0].name : 'Dosya seçilmedi'">
-          <div class="space-y-2">
-            <svg class="mx-auto h-12 w-12 text-slate-500 group-hover:text-emerald-400 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+          <div class="space-y-2.5 pointer-events-none">
+            <svg class="mx-auto h-12 w-12 text-zinc-500 group-hover:text-red-500 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
               <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            <div class="text-sm text-slate-300">
-              <span class="font-semibold text-emerald-400">Dosya seçmek için tıklayın</span> veya sürükleyip bırakın
+            <div class="text-sm font-semibold text-zinc-200">
+              <span class="text-red-500">Dosya seçmek için tıklayın</span> veya sürükleyin
             </div>
-            <p id="file-chosen" class="text-xs font-mono text-emerald-300/90 pt-1 font-semibold">Dosya seçilmedi</p>
-            <p class="text-xs text-slate-500">CSV formatında (Tarih, Açıklama, Tutar sütunları)</p>
+            <p id="file-chosen" class="text-xs font-mono text-red-400 font-bold">Dosya seçilmedi</p>
+            <p class="text-[11px] text-zinc-500">Tarih, Açıklama ve Tutar sütunları içeren CSV formatı</p>
           </div>
         </div>
       </div>
 
-      <div class="bg-slate-950/60 rounded-xl p-4 border border-slate-800 text-xs text-slate-400 space-y-1.5">
-        <div class="font-semibold text-slate-300 flex items-center gap-1.5">
-          <span>💡</span> Desteklenen Formatlar:
+      <div class="bg-[#09090B] rounded-xl p-4 border border-zinc-800 text-xs text-zinc-400 space-y-1.5">
+        <div class="font-bold text-zinc-300 flex items-center gap-1.5">
+          <span class="text-red-500">ℹ</span> Desteklenen Banka CSV Biçimleri:
         </div>
-        <p>• Tarih: <code class="text-emerald-400">15.08.2026</code>, <code class="text-emerald-400">15/08/2026</code> veya <code class="text-emerald-400">2026-08-15</code></p>
-        <p>• Tutar: <code class="text-emerald-400">-150,50</code>, <code class="text-emerald-400">1.250,50 TL</code> veya ayrı Borç/Alacak sütunları</p>
-        <p>• Noktalı virgül (<code class="text-emerald-400">;</code>) ve virgül (<code class="text-emerald-400">,</code>) ayraçları otomatik algılanır.</p>
+        <p>• Tarih formatları: <code class="text-zinc-200 font-mono">15.08.2026</code>, <code class="text-zinc-200 font-mono">15/08/2026</code>, <code class="text-zinc-200 font-mono">2026-08-15</code></p>
+        <p>• Tutar formatları: <code class="text-red-400 font-mono">-150,50</code>, <code class="text-zinc-200 font-mono">1.250,50 ₺</code> veya ayrı Borç / Alacak sütunları</p>
+        <p>• Noktalı virgül (<code class="text-zinc-200">;</code>) ve standart virgül (<code class="text-zinc-200">,</code>) ayraçları otomatik tanınır.</p>
       </div>
 
       <div class="pt-2">
-        <%= f.submit "Ekstreyi İçe Aktar ve Analiz Et", class: "w-full py-3.5 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer" %>
+        <%= f.submit "Ekstreyi İçe Aktar ve Analiz Et", class: "w-full py-3.5 px-6 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-red-600/25 transition-all active:scale-[0.99] cursor-pointer" %>
       </div>
     <% end %>
   </div>

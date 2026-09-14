@@ -3,23 +3,20 @@ require "csv"
 module StatementParsers
   class CsvParser
     DATE_HEADERS = [
-      "tarih", "işlem tarihi", "islem tarihi", "valor tarihi", "valör tarihi",
-      "dekont tarihi", "date", "trans date", "transaction date"
+      "tarih", "islem tarihi", "valor tarihi", "dekont tarihi", "date", "trans date", "transaction date"
     ].freeze
 
     DESC_HEADERS = [
-      "açıklama", "aciklama", "işlem açıklaması", "islem aciklamasi",
-      "tanım", "tanim", "detay", "işlem detayı", "islem detayi",
+      "aciklama", "islem aciklamasi", "tanim", "detay", "islem detayi",
       "description", "details", "narrative"
     ].freeze
 
     AMOUNT_HEADERS = [
-      "tutar", "işlem tutarı", "islem tutari", "tutar (tl)", "tutar (try)",
-      "amount", "hareket tutarı"
+      "tutar", "islem tutari", "tutar (tl)", "tutar (try)", "amount", "hareket tutari"
     ].freeze
 
-    DEBIT_HEADERS = ["borç", "borc", "debit", "çekilen", "cekilen", "harcama"].freeze
-    CREDIT_HEADERS = ["alacak", "credit", "yatırılan", "yatirilan", "gelir"].freeze
+    DEBIT_HEADERS = ["borc", "debit", "cekilen", "harcama"].freeze
+    CREDIT_HEADERS = ["alacak", "credit", "yatirilan", "gelir"].freeze
 
     def initialize(file_or_content, statement: nil)
       @content = extract_content(file_or_content)
@@ -93,15 +90,16 @@ module StatementParsers
     def normalize_encoding(str)
       return "" if str.blank?
 
-      if str.valid_encoding? && str.encoding == Encoding::UTF_8
-        str.sub("\xEF\xBB\xBF", "") # remove UTF-8 BOM if present
-      else
-        # Try Windows-1254 (Turkish) then ISO-8859-9 then binary force
-        begin
-          str.encode("UTF-8", "Windows-1254", invalid: :replace, undef: :replace)
-        rescue EncodingError
-          str.encode("UTF-8", "ISO-8859-9", invalid: :replace, undef: :replace)
-        end
+      utf8_candidate = str.dup.force_encoding("UTF-8")
+      if utf8_candidate.valid_encoding?
+        return utf8_candidate.sub("\xEF\xBB\xBF", "")
+      end
+
+      # Fallback for Windows-1254 (Turkish legacy) or ISO-8859-9
+      begin
+        str.encode("UTF-8", "Windows-1254", invalid: :replace, undef: :replace)
+      rescue EncodingError
+        str.encode("UTF-8", "ISO-8859-9", invalid: :replace, undef: :replace)
       end
     end
 
@@ -129,7 +127,7 @@ module StatementParsers
       rows.each_with_index do |row, idx|
         next if row.nil? || row.empty?
 
-        sanitized_cells = row.map { |cell| cell.to_s.strip.downcase }
+        sanitized_cells = row.map { |cell| sanitize_header_cell(cell) }
 
         date_col = sanitized_cells.find_index { |c| DATE_HEADERS.any? { |h| c.include?(h) } }
         desc_col = sanitized_cells.find_index { |c| DESC_HEADERS.any? { |h| c.include?(h) } }
@@ -151,6 +149,17 @@ module StatementParsers
       end
 
       nil
+    end
+
+    def sanitize_header_cell(cell)
+      cell.to_s.strip
+          .tr("İIı", "iii")
+          .tr("Şş", "ss")
+          .tr("Ğğ", "gg")
+          .tr("Çç", "cc")
+          .tr("Öö", "oo")
+          .tr("Üü", "uu")
+          .downcase
     end
 
     def parse_date(date_str)
