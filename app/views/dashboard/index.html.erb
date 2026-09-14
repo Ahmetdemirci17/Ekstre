@@ -123,33 +123,67 @@
     <!-- Charts Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Monthly Trend Line Chart (2 Cols) -->
-      <div class="lg:col-span-2 bg-[#18191E] border border-[#262830] rounded-xl p-5 sm:p-6 flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-4 pb-3 border-b border-[#262830]">
+      <div class="lg:col-span-2 bg-[#18191E] border border-[#262830] rounded-xl p-5 sm:p-6 flex flex-col justify-between"
+           data-controller="chart"
+           data-chart-type-value="line"
+           data-chart-data-value="<%= @trend_chart_data.to_json %>"
+           data-chart-options-value='{
+             "responsive": true,
+             "maintainAspectRatio": false,
+             "interaction": { "mode": "index", "intersect": false },
+             "plugins": {
+               "legend": { "display": false }
+             },
+             "scales": {
+               "x": { "grid": { "color": "rgba(255, 255, 255, 0.04)" }, "ticks": { "color": "#6B707E", "font": { "family": "Inter", "size": 11 } } },
+               "y": { "grid": { "color": "rgba(255, 255, 255, 0.04)" }, "ticks": { "color": "#6B707E", "font": { "family": "Inter", "size": 11 } } }
+             }
+           }'>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-[#262830]">
           <div>
             <h2 class="text-sm sm:text-base font-semibold text-white tracking-tight">Harcama & Gelir Trendi</h2>
             <p class="text-xs text-zinc-400">Son 6 aylık nakit akışı değişimi</p>
           </div>
-          <span class="text-[11px] font-medium px-2.5 py-1 rounded-md bg-[#141519] border border-[#262830] text-zinc-400">
-            6 Aylık Grafik
-          </span>
+
+          <!-- Interactive Legend Buttons with Checkboxes -->
+          <div class="flex items-center gap-2">
+            <!-- Harcamalar (Gider) -->
+            <button type="button"
+                    data-action="click->chart#toggleDataset"
+                    data-chart-dataset-index-param="0"
+                    data-chart-color="#B91C1C"
+                    aria-pressed="true"
+                    title="Grafikte gösteriliyor (Gizlemek için tıklayın)"
+                    class="group flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-[#262830] bg-[#141519] hover:bg-[#1E2026] text-xs font-medium transition-all cursor-pointer select-none">
+              <span class="legend-box w-3.5 h-3.5 rounded flex items-center justify-center border transition-all"
+                    style="background-color: #B91C1C; border-color: #B91C1C;">
+                <svg class="legend-check w-2.5 h-2.5 text-white transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                </svg>
+              </span>
+              <span class="legend-label text-zinc-200">Harcamalar (Gider)</span>
+            </button>
+
+            <!-- Gelirler -->
+            <button type="button"
+                    data-action="click->chart#toggleDataset"
+                    data-chart-dataset-index-param="1"
+                    data-chart-color="#059669"
+                    aria-pressed="true"
+                    title="Grafikte gösteriliyor (Gizlemek için tıklayın)"
+                    class="group flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-[#262830] bg-[#141519] hover:bg-[#1E2026] text-xs font-medium transition-all cursor-pointer select-none">
+              <span class="legend-box w-3.5 h-3.5 rounded flex items-center justify-center border transition-all"
+                    style="background-color: #059669; border-color: #059669;">
+                <svg class="legend-check w-2.5 h-2.5 text-white transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                </svg>
+              </span>
+              <span class="legend-label text-zinc-200">Gelirler</span>
+            </button>
+          </div>
         </div>
         <div class="w-full h-64 relative">
-          <canvas data-controller="chart"
-                  data-chart-type-value="line"
-                  data-chart-data-value="<%= @trend_chart_data.to_json %>"
-                  data-chart-options-value='{
-                    "responsive": true,
-                    "maintainAspectRatio": false,
-                    "interaction": { "mode": "index", "intersect": false },
-                    "plugins": {
-                      "legend": { "position": "top", "labels": { "color": "#9CA3AF", "font": { "family": "Inter", "weight": "500", "size": 11 } } }
-                    },
-                    "scales": {
-                      "x": { "grid": { "color": "rgba(255, 255, 255, 0.04)" }, "ticks": { "color": "#6B707E", "font": { "family": "Inter", "size": 11 } } },
-                      "y": { "grid": { "color": "rgba(255, 255, 255, 0.04)" }, "ticks": { "color": "#6B707E", "font": { "family": "Inter", "size": 11 } } }
-                    }
-                  }'>
-          </canvas>
+          <canvas data-chart-target="canvas"></canvas>
         </div>
       </div>
 
