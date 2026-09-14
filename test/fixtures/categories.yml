@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+market:
+  name: Market
+  color: "#10B981"
+
+fatura:
+  name: Fatura
+  color: "#EF4444"
+
+diger:
+  name: Diğer
+  color: "#6B7280"

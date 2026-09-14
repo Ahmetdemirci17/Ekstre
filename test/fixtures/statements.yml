@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+august_statement:
+  source_filename: "ekstre_agustos_2026.csv"
+  imported_at: <%= 1.day.ago %>
+  bank_name: "Garanti BBVA"
+  status: "parsed"
+
+september_statement:
+  source_filename: "ekstre_eylul_2026.csv"
+  imported_at: <%= Time.current %>
+  bank_name: "İş Bankası"
+  status: "uploaded"

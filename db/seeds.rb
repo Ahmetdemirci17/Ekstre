@@ -1,9 +1,19 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Seed default categories with distinct colors
+default_categories = [
+  { name: "Market", color: "#10B981" },       # Emerald
+  { name: "Fatura", color: "#EF4444" },       # Red
+  { name: "Ulaşım", color: "#F59E0B" },       # Amber
+  { name: "Eğlence", color: "#8B5CF6" },      # Purple
+  { name: "Sağlık", color: "#EC4899" },       # Pink
+  { name: "Kira & Konut", color: "#3B82F6" }, # Blue
+  { name: "Maaş / Gelir", color: "#059669" }, # Dark Green
+  { name: "Diğer", color: "#6B7280" }         # Gray
+]
+
+default_categories.each do |cat|
+  Category.find_or_create_by!(name: cat[:name]) do |c|
+    c.color = cat[:color]
+  end
+end
+
+puts "Seeded #{Category.count} categories."

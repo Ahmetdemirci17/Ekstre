@@ -1,0 +1,18 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+groceries:
+  statement: august_statement
+  category: market
+  date: 2026-08-10
+  description: "MIGROS TICARET A.S. ISTANBUL"
+  amount: -450.75
+  raw_row: "10.08.2026;MIGROS TICARET A.S. ISTANBUL;-450.75"
+  categorized_by: 1
+
+uncategorized_electric:
+  statement: september_statement
+  date: 2026-09-02
+  description: "CK BOGAZICI ELEKTRIK PERAKENDE"
+  amount: -620.00
+  raw_row: "02.09.2026;CK BOGAZICI ELEKTRIK PERAKENDE;-620.00"
+  categorized_by: 0
