@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@transaction, :category) do %>
+  <%= render "transactions/category_cell", transaction: @transaction %>
+<% end %>

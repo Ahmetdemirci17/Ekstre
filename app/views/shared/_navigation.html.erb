@@ -1,0 +1,32 @@
+<nav class="sticky top-0 z-50 bg-[#0F172A]/90 backdrop-blur-md border-b border-slate-800 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center gap-3">
+        <%= link_to root_path, class: "flex items-center gap-2 text-xl font-bold tracking-tight text-white hover:text-emerald-400 transition-colors" do %>
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
+            ₺
+          </div>
+          <span>Ekstre<span class="text-emerald-400">AI</span></span>
+        <% end %>
+
+        <div class="hidden md:flex items-center gap-1 ml-8">
+          <%= link_to dashboard_path, class: "px-3.5 py-2 rounded-lg text-sm font-medium transition-all #{current_page?(dashboard_path) || current_page?(root_path) ? 'bg-slate-800 text-emerald-400 shadow-inner' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
+            📊 Dashboard
+          <% end %>
+          <%= link_to statements_path, class: "px-3.5 py-2 rounded-lg text-sm font-medium transition-all #{current_page?(statements_path) ? 'bg-slate-800 text-emerald-400 shadow-inner' : 'text-slate-300 hover:text-white hover:bg-slate-800/60'}" do %>
+            📁 Ekstre Geçmişi
+          <% end %>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <%= link_to new_statement_path, class: "inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-sm shadow-md shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          <span>Ekstre Yükle</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

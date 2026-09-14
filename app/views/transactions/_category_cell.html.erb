@@ -1,0 +1,31 @@
+<%= turbo_frame_tag dom_id(transaction, :category) do %>
+  <%= form_with(model: transaction, url: transaction_path(transaction), method: :patch, class: "flex items-center gap-2") do |f| %>
+    <div class="relative inline-flex items-center">
+      <% if transaction.category %>
+        <span class="w-2.5 h-2.5 rounded-full mr-2 shrink-0" style="background-color: <%= transaction.category.color %>"></span>
+      <% else %>
+        <span class="w-2.5 h-2.5 rounded-full mr-2 shrink-0 bg-slate-600"></span>
+      <% end %>
+
+      <%= f.collection_select :category_id, 
+            Category.order(:name), 
+            :id, 
+            :name, 
+            { include_blank: "Kategori Seçin..." }, 
+            { 
+              class: "text-xs rounded-lg bg-slate-950 border border-slate-700 text-slate-200 py-1.5 px-2.5 pr-7 focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-colors cursor-pointer",
+              onchange: "this.form.requestSubmit()"
+            } %>
+    </div>
+
+    <% if transaction.ai? %>
+      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20" title="Yapay zeka tarafından kategorilendirildi">
+        🤖 AI
+      </span>
+    <% elsif transaction.manual? %>
+      <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20" title="Kullanıcı tarafından elle seçildi">
+        👤 Manuel
+      </span>
+    <% end %>
+  <% end %>
+<% end %>
