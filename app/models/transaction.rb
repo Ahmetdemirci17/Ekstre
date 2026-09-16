@@ -29,4 +29,8 @@ class Transaction < ApplicationRecord
   def formatted_amount
     sprintf("%.2f TL", amount.abs)
   end
+
+  def categorized_by_ai?
+    ai?
+  end
 end

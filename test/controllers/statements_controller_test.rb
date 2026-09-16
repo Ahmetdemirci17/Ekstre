@@ -20,6 +20,22 @@ class StatementsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should show statement with ai analyzed transactions" do
+    @statement.transactions.create!(
+      date: Date.current,
+      description: "POS 1234 IYZICO / TRENDYOL",
+      amount: -250.0,
+      merchant_name: "Trendyol",
+      ai_analysis: "Online alisveris",
+      categorized_by: :ai
+    )
+
+    get statement_url(@statement)
+    assert_response :success
+    assert_select "span", text: "Trendyol"
+    assert_includes response.body, "AI Analizli"
+  end
+
   test "should destroy statement" do
     assert_difference("Statement.count", -1) do
       delete statement_url(@statement)

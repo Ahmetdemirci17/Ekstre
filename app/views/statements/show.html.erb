@@ -86,7 +86,7 @@
                 <div class="flex items-center gap-2">
                   <% if transaction.merchant_name.present? %>
                     <span class="font-semibold text-white text-xs sm:text-sm"><%= transaction.merchant_name %></span>
-                    <% if transaction.categorized_by_ai? %>
+                    <% if transaction.ai? %>
                       <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[#241416] text-[#E05252] border border-[#3E1D22] text-[10px] font-medium" title="Yapay zeka tarafından analiz edildi">
                         ⚡ AI Analizli
                       </span>
