@@ -33,4 +33,22 @@ class Transaction < ApplicationRecord
   def categorized_by_ai?
     ai?
   end
+
+  def unknown_merchant?
+    return true if merchant_name.blank?
+
+    norm = merchant_name.to_s.strip.downcase
+    norm.in?(["diğer", "diger", "bilinmeyen", "bilinmeyen kurum", "belirsiz", "muhtelif"]) ||
+      norm.start_with?("bilinmeyen")
+  end
+
+  def display_merchant
+    if unknown_merchant?
+      "Bilinmeyen Kurum (#{description})"
+    elsif merchant_name.present?
+      merchant_name
+    else
+      description
+    end
+  end
 end

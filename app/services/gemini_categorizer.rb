@@ -84,6 +84,7 @@ class GeminiCategorizer
          - "OPET AKARYAKIT ISTASYONU LEVENT" -> "Opet"
          - "FAST TR3200... AHMET YILMAZ KIRA ODEMESI" -> "Ahmet Yılmaz"
          - "APPLE SERVICES COM/BILL" -> "Apple"
+         - Eğer işlem açıklamasından kurum, mağaza veya kişi adı anlaşılamıyorsa veya sadece referans/işlem kodu varsa, "merchant" olarak "Bilinmeyen Kurum" yaz (asla "Diğer" yazma).
       2. "analysis": Bu harcamanın veya gelirin tam olarak ne olduğunu ve amacını açıklayan net, profesyonel Türkçe 1 cümle.
          Örnekler:
          - "Online e-ticaret platformu giyim ve ürün alışverişi."
@@ -258,8 +259,8 @@ class GeminiCategorizer
         analysis = "Reçeteli ilaç veya sağlık ve medikal hizmet ödemesi."
       else
         cat = "Diğer"
-        merchant = clean_desc.truncate(30)
-        analysis = "Banka ekstresinde yer alan muhtelif hesap hareketi."
+        merchant = "Bilinmeyen Kurum"
+        analysis = "Banka ekstresinde yer alan muhtelif veya referans kodlu hesap hareketi."
       end
 
       results[tx.id] = cat

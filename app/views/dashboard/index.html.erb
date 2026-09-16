@@ -272,8 +272,11 @@
                   <%= transaction.date.strftime("%d.%m.%Y") %>
                 </td>
                 <td class="py-3 px-4 max-w-sm sm:max-w-md">
-                  <div class="flex items-center gap-2">
-                    <% if transaction.merchant_name.present? %>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <% if transaction.unknown_merchant? %>
+                      <span class="font-semibold text-white text-xs sm:text-sm">Bilinmeyen Kurum</span>
+                      <span class="text-xs text-zinc-400 font-mono truncate max-w-[200px]">(<%= transaction.description %>)</span>
+                    <% elsif transaction.merchant_name.present? %>
                       <span class="font-semibold text-white text-xs sm:text-sm"><%= transaction.merchant_name %></span>
                     <% else %>
                       <span class="font-medium text-white text-xs sm:text-sm truncate" title="<%= transaction.description %>">

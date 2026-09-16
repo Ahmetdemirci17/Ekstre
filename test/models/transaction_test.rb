@@ -21,4 +21,18 @@ class TransactionTest < ActiveSupport::TestCase
     tx = Transaction.new
     assert_equal "unassigned", tx.categorized_by
   end
+
+  test "correctly handles unknown_merchant? and display_merchant formatting" do
+    known_tx = Transaction.new(merchant_name: "Trendyol", description: "POS 123 IYZICO")
+    assert_not known_tx.unknown_merchant?
+    assert_equal "Trendyol", known_tx.display_merchant
+
+    unknown_tx = Transaction.new(merchant_name: "Bilinmeyen Kurum", description: "Ref = 48291 HS")
+    assert unknown_tx.unknown_merchant?
+    assert_equal "Bilinmeyen Kurum (Ref = 48291 HS)", unknown_tx.display_merchant
+
+    blank_tx = Transaction.new(merchant_name: nil, description: "Bilinmeyen Hareket")
+    assert blank_tx.unknown_merchant?
+    assert_equal "Bilinmeyen Kurum (Bilinmeyen Hareket)", blank_tx.display_merchant
+  end
 end

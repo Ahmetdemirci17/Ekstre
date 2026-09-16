@@ -83,17 +83,21 @@
                 <%= transaction.date.strftime("%d.%m.%Y") %>
               </td>
               <td class="py-3 px-4 max-w-md">
-                <div class="flex items-center gap-2">
-                  <% if transaction.merchant_name.present? %>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <% if transaction.unknown_merchant? %>
+                    <span class="font-semibold text-white text-xs sm:text-sm">Bilinmeyen Kurum</span>
+                    <span class="text-xs text-zinc-400 font-mono">(<%= transaction.description %>)</span>
+                  <% elsif transaction.merchant_name.present? %>
                     <span class="font-semibold text-white text-xs sm:text-sm"><%= transaction.merchant_name %></span>
-                    <% if transaction.ai? %>
-                      <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[#241416] text-[#E05252] border border-[#3E1D22] text-[10px] font-medium" title="Yapay zeka tarafından analiz edildi">
-                        ⚡ AI Analizli
-                      </span>
-                    <% end %>
                   <% else %>
                     <span class="font-medium text-white text-xs sm:text-sm truncate" title="<%= transaction.description %>">
                       <%= transaction.description %>
+                    </span>
+                  <% end %>
+
+                  <% if transaction.ai? %>
+                    <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[#241416] text-[#E05252] border border-[#3E1D22] text-[10px] font-medium shrink-0" title="Yapay zeka tarafından analiz edildi">
+                      ⚡ AI Analizli
                     </span>
                   <% end %>
                 </div>
@@ -105,9 +109,11 @@
                   </div>
                 <% end %>
 
-                <div class="text-[10px] font-mono text-zinc-500 truncate mt-0.5" title="<%= transaction.raw_row.presence || transaction.description %>">
-                  <%= transaction.description %>
-                </div>
+                <% unless transaction.unknown_merchant? %>
+                  <div class="text-[10px] font-mono text-zinc-500 truncate mt-0.5" title="<%= transaction.raw_row.presence || transaction.description %>">
+                    Banka Kaydı: <%= transaction.description %>
+                  </div>
+                <% end %>
               </td>
               <td class="py-3 px-4 whitespace-nowrap text-right font-semibold text-xs sm:text-sm font-tabular">
                 <% if transaction.amount.negative? %>
